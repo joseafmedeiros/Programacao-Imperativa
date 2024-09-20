@@ -1,1 +1,86 @@
 
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class BuscaVetor {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int[] vetor = new int[10];
+        
+        System.out.println("Digite 10 valores para o vetor:");
+        for (int i = 0; i < 10; i++) {
+            System.out.print("Valor " + (i + 1) + ": ");
+            vetor[i] = scanner.nextInt();
+        }
+
+        boolean ordenado = isOrdenado(vetor);
+
+        if (ordenado) {
+            System.out.println("O vetor está ordenado.");
+        } else {
+            System.out.println("O vetor não está ordenado.");
+        }
+
+        char continuar = 's';
+        while (continuar == 's' || continuar == 'S') {
+            System.out.print("Digite um número para buscar: ");
+            int elemento = scanner.nextInt();
+
+            int posicao;
+            if (ordenado) {
+                posicao = buscaBinaria(vetor, elemento);
+            } else {
+                posicao = buscaSimples(vetor, elemento);
+            }
+
+            if (posicao != -1) {
+                System.out.println("Elemento encontrado na posição: " + posicao);
+            } else {
+                System.out.println("Elemento não encontrado.");
+            }
+
+            System.out.print("Deseja continuar? (s/n): ");
+            continuar = scanner.next().charAt(0);
+        }
+        
+        scanner.close();
+    }
+
+    public static boolean isOrdenado(int[] vetor) {
+        for (int i = 1; i < vetor.length; i++) {
+            if (vetor[i] < vetor[i - 1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int buscaSimples(int[] vetor, int elemento) {
+        for (int i = 0; i < vetor.length; i++) {
+            if (vetor[i] == elemento) {
+                return i;
+            }
+        }
+        return -1;  // Elemento não encontrado
+    }
+
+    public static int buscaBinaria(int[] vetor, int elemento) {
+        int inicio = 0;
+        int fim = vetor.length - 1;
+
+        while (inicio <= fim) {
+            int meio = (inicio + fim) / 2;
+
+            if (vetor[meio] == elemento) {
+                return meio;
+            } else if (vetor[meio] < elemento) {
+                inicio = meio + 1;
+            } else {
+                fim = meio - 1;
+            }
+        }
+
+        return -1;  // Elemento não encontrado
+    }
+}
